@@ -1,0 +1,155 @@
+{% extends "base.html" %}
+
+{% block title %}Login - Password Manager{% endblock %}
+
+{% block content %}
+
+<div class="card auth-card">
+
+    <div class="auth-header">
+
+        <div class="auth-icon">
+            🔐
+        </div>
+
+        <h1 class="auth-title">
+            User Login
+        </h1>
+
+        <p class="auth-subtitle">
+            Unlock your password vault with your Master Password.
+        </p>
+
+    </div>
+
+
+    <!-- Login Form -->
+
+    <form
+        method="POST"
+        action="{{ url_for('main.login') }}"
+    >
+
+        <!-- Username -->
+
+        <div class="form-group">
+
+            <label for="username">
+                Username
+            </label>
+
+            <input
+                type="text"
+                id="username"
+                name="username"
+                class="form-control"
+                placeholder="Enter your username"
+                autocomplete="username"
+                required
+                autofocus
+            >
+
+        </div>
+
+
+        <!-- Master Password -->
+
+        <div class="form-group">
+
+            <label for="master_password">
+                Master Password
+            </label>
+
+            <div class="password-wrapper">
+
+                <input
+                    type="password"
+                    id="master_password"
+                    name="master_password"
+                    class="form-control"
+                    placeholder="Enter your Master Password"
+                    autocomplete="current-password"
+                    required
+                >
+
+                <button
+                    type="button"
+                    class="toggle-password"
+                    onclick="
+                        togglePassword(
+                            'master_password',
+                            this
+                        )
+                    "
+                    aria-label="Show or hide Master Password"
+                >
+                    👁️
+                </button>
+
+            </div>
+
+        </div>
+
+
+        <!-- Login Button -->
+
+        <button
+            type="submit"
+            class="btn btn-primary"
+            style="
+                width: 100%;
+                margin-top: 5px;
+            "
+        >
+            🔐 Login
+        </button>
+
+    </form>
+
+
+    <!-- Forgot Master Password -->
+
+    <div
+        style="
+            text-align: center;
+            margin-top: 20px;
+        "
+    >
+
+        <a
+            href="{{ url_for('main.forgot_master_password') }}"
+            class="link"
+        >
+            🔑 Forgot Master Password?
+        </a>
+
+    </div>
+
+
+    <!-- Register -->
+
+    <div
+        style="
+            text-align: center;
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid #e5e7eb;
+        "
+    >
+
+        <span style="color: #6b7280;">
+            Don't have an account?
+        </span>
+
+        <a
+            href="{{ url_for('main.register') }}"
+            class="link"
+        >
+            Register
+        </a>
+
+    </div>
+
+</div>
+
+{% endblock %}

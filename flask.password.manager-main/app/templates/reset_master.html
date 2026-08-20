@@ -1,0 +1,182 @@
+{% extends "base.html" %}
+
+{% block title %}Reset Master Password - Password Manager{% endblock %}
+
+{% block content %}
+
+<div class="card auth-card">
+
+    <div class="auth-header">
+
+        <div class="auth-icon">
+            🔐
+        </div>
+
+        <h1 class="auth-title">
+            Reset Master Password
+        </h1>
+
+        <p class="auth-subtitle">
+            Create a new Master Password for your account.
+        </p>
+
+    </div>
+
+
+    <!-- Reset Form -->
+
+    <form
+        method="POST"
+        action="{{ url_for('main.reset_master_password') }}"
+    >
+
+        <!-- New Master Password -->
+
+        <div class="form-group">
+
+            <label for="new_master_password">
+                New Master Password
+            </label>
+
+            <div class="password-wrapper">
+
+                <input
+                    type="password"
+                    id="new_master_password"
+                    name="new_master_password"
+                    class="form-control"
+                    placeholder="Enter new Master Password"
+                    autocomplete="new-password"
+                    minlength="8"
+                    required
+                >
+
+                <button
+                    type="button"
+                    class="toggle-password"
+                    onclick="
+                        togglePassword(
+                            'new_master_password',
+                            this
+                        )
+                    "
+                    aria-label="Show or hide password"
+                >
+                    👁️
+                </button>
+
+            </div>
+
+            <small
+                style="
+                    display: block;
+                    margin-top: 6px;
+                    color: #6b7280;
+                "
+            >
+                Minimum 8 characters.
+            </small>
+
+        </div>
+
+
+        <!-- Confirm Master Password -->
+
+        <div class="form-group">
+
+            <label for="confirm_master_password">
+                Confirm New Master Password
+            </label>
+
+            <div class="password-wrapper">
+
+                <input
+                    type="password"
+                    id="confirm_master_password"
+                    name="confirm_master_password"
+                    class="form-control"
+                    placeholder="Confirm new Master Password"
+                    autocomplete="new-password"
+                    minlength="8"
+                    required
+                >
+
+                <button
+                    type="button"
+                    class="toggle-password"
+                    onclick="
+                        togglePassword(
+                            'confirm_master_password',
+                            this
+                        )
+                    "
+                    aria-label="Show or hide password"
+                >
+                    👁️
+                </button>
+
+            </div>
+
+        </div>
+
+
+        <!-- Security Notice -->
+
+        <div
+            style="
+                background: #fef3c7;
+                border: 1px solid #fde68a;
+                color: #92400e;
+                padding: 12px;
+                border-radius: 7px;
+                margin-bottom: 20px;
+                font-size: 13px;
+            "
+        >
+
+            🔒 Your new Master Password will be securely hashed
+            before being stored.
+
+            <br><br>
+
+            ⚠️ Remember your new Master Password. It is required
+            to unlock your vault.
+
+        </div>
+
+
+        <!-- Reset Button -->
+
+        <button
+            type="submit"
+            class="btn btn-primary"
+            style="width: 100%;"
+        >
+            🔐 Reset Master Password
+        </button>
+
+    </form>
+
+
+    <!-- Login -->
+
+    <div
+        style="
+            text-align: center;
+            margin-top: 20px;
+        "
+    >
+
+        <a
+            href="{{ url_for('main.login') }}"
+            class="link"
+        >
+            ← Back to Login
+        </a>
+
+    </div>
+
+</div>
+
+
+{% endblock %}

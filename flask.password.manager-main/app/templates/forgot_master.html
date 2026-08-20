@@ -1,0 +1,115 @@
+{% extends "base.html" %}
+
+{% block title %}Forgot Master Password{% endblock %}
+
+{% block content %}
+
+<div class="card auth-card">
+
+    <div class="auth-header">
+
+        <div class="auth-icon">
+            🔑
+        </div>
+
+        <h1 class="auth-title">
+            Forgot Master Password?
+        </h1>
+
+        <p class="auth-subtitle">
+            Enter your registered email address to reset
+            your Master Password.
+        </p>
+
+    </div>
+
+
+    <!-- Forgot Password Form -->
+
+    <form
+        method="POST"
+        action="{{ url_for('main.forgot_master_password') }}"
+    >
+
+        <div class="form-group">
+
+            <label for="email">
+                Registered Email
+            </label>
+
+            <input
+                type="email"
+                id="email"
+                name="email"
+                class="form-control"
+                placeholder="Enter your registered email"
+                autocomplete="email"
+                required
+                autofocus
+            >
+
+        </div>
+
+
+        <!-- Information -->
+
+        <div
+            style="
+                background: #eff6ff;
+                border: 1px solid #bfdbfe;
+                color: #1e40af;
+                padding: 12px;
+                border-radius: 7px;
+                margin-bottom: 20px;
+                font-size: 13px;
+            "
+        >
+
+            📧 A 6-digit OTP will be sent to your
+            registered email address.
+
+            <br><br>
+
+            ⏱️ The OTP will expire after
+            {{ config.get("OTP_EXPIRY_MINUTES", 10) }}
+            minutes.
+
+        </div>
+
+
+        <!-- Submit -->
+
+        <button
+            type="submit"
+            class="btn btn-primary"
+            style="width: 100%;"
+        >
+            📩 Send OTP
+        </button>
+
+    </form>
+
+
+    <!-- Back to Login -->
+
+    <div
+        style="
+            text-align: center;
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid #e5e7eb;
+        "
+    >
+
+        <a
+            href="{{ url_for('main.login') }}"
+            class="link"
+        >
+            ← Back to Login
+        </a>
+
+    </div>
+
+</div>
+
+{% endblock %}

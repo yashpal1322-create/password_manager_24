@@ -1,0 +1,77 @@
+{% extends "base.html" %}
+
+{% block title %}Error - Password Manager{% endblock %}
+
+{% block content %}
+
+<div class="card" style="max-width: 600px; margin: 60px auto; text-align: center;">
+
+    <div style="font-size: 60px; margin-bottom: 15px;">
+        ⚠️
+    </div>
+
+    <h1 style="margin-bottom: 10px;">
+        Something went wrong
+    </h1>
+
+    <p style="color: #6b7280; margin-bottom: 25px;">
+        The page you requested could not be completed.
+    </p>
+
+    {% if error_message %}
+
+        <div
+            style="
+                background: #fef2f2;
+                border: 1px solid #fecaca;
+                color: #991b1b;
+                padding: 12px;
+                border-radius: 7px;
+                margin-bottom: 20px;
+            "
+        >
+            {{ error_message }}
+        </div>
+
+    {% endif %}
+
+    <div class="actions" style="justify-content: center;">
+
+        {% if session.get("user_id") %}
+
+            {% if session.get("role") == "admin" %}
+
+                <a
+                    href="{{ url_for('main.admin_vault') }}"
+                    class="btn btn-primary"
+                >
+                    👑 Admin Vault
+                </a>
+
+            {% else %}
+
+                <a
+                    href="{{ url_for('main.index') }}"
+                    class="btn btn-primary"
+                >
+                    🔐 My Vault
+                </a>
+
+            {% endif %}
+
+        {% else %}
+
+            <a
+                href="{{ url_for('main.login') }}"
+                class="btn btn-primary"
+            >
+                🔐 Login
+            </a>
+
+        {% endif %}
+
+    </div>
+
+</div>
+
+{% endblock %}

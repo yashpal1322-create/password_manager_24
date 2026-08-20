@@ -1,0 +1,170 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="container mt-5">
+
+    <div class="row justify-content-center">
+
+        <div class="col-md-5">
+
+            <div class="card shadow">
+
+                <div class="card-header bg-dark text-white text-center">
+
+                    <h3>
+                        🔐 Unlock Password Vault
+                    </h3>
+
+                </div>
+
+
+                <div class="card-body">
+
+                    <p class="text-center text-muted">
+
+                        Enter your Master Password to access
+                        your saved passwords.
+
+                    </p>
+
+
+                    <form
+                        method="POST"
+                        action="{{ url_for('unlock_vault') }}"
+                    >
+                       
+
+                        <!-- Master Password -->
+
+                        <div class="mb-3">
+
+                            <label
+                                for="master_password"
+                                class="form-label"
+                            >
+                                Master Password
+                            </label>
+
+
+                            <input
+                                type="password"
+                                name="master_password"
+                                id="master_password"
+                                class="form-control"
+                                placeholder="Enter Master Password"
+                                autocomplete="current-password"
+                                required
+                                autofocus
+                            >
+
+
+                            <!-- Show Password -->
+
+                            <div class="form-check mt-2">
+
+                                <input
+                                    type="checkbox"
+                                    class="form-check-input"
+                                    id="showPassword"
+                                >
+
+                                <label
+                                    class="form-check-label"
+                                    for="showPassword"
+                                >
+                                    Show Password
+                                </label>
+
+                            </div>
+
+                        </div>
+
+
+                        <!-- Unlock Button -->
+
+                        <div class="d-grid">
+
+                            <button
+                                type="submit"
+                                class="btn btn-dark"
+                            >
+                                🔓 Unlock Vault
+                            </button>
+
+                        </div>
+
+                    </form>
+
+                </div>
+
+
+                <!-- Footer -->
+
+                <div class="card-footer text-center">
+
+                    <a
+                        href="{{ url_for('index') }}"
+                        class="btn btn-secondary"
+                    >
+                        ← Back to Dashboard
+                    </a>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- ===================================================== -->
+<!-- SHOW / HIDE PASSWORD -->
+<!-- ===================================================== -->
+
+<script>
+
+document.addEventListener(
+    "DOMContentLoaded",
+    function () {
+
+        const passwordInput =
+            document.getElementById(
+                "master_password"
+            );
+
+
+        const showPassword =
+            document.getElementById(
+                "showPassword"
+            );
+
+
+        showPassword.addEventListener(
+            "change",
+            function () {
+
+                if (this.checked) {
+
+                    passwordInput.type =
+                        "text";
+
+                } else {
+
+                    passwordInput.type =
+                        "password";
+
+                }
+
+            }
+        );
+
+    }
+);
+
+</script>
+
+{% endblock %}

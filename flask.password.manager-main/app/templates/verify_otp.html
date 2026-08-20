@@ -1,0 +1,117 @@
+{% extends "base.html" %}
+
+{% block title %}Verify OTP - Password Manager{% endblock %}
+
+{% block content %}
+
+<div class="card auth-card">
+
+    <div class="auth-header">
+
+        <div class="auth-icon">
+            📩
+        </div>
+
+        <h1 class="auth-title">
+            Verify OTP
+        </h1>
+
+        <p class="auth-subtitle">
+            Enter the 6-digit OTP sent to your registered email.
+        </p>
+
+    </div>
+
+
+    <!-- OTP Form -->
+
+    <form
+        method="POST"
+        action="{{ url_for('main.verify_otp') }}"
+    >
+
+        <div class="form-group">
+
+            <label for="otp">
+                6-Digit OTP
+            </label>
+
+            <input
+                type="text"
+                id="otp"
+                name="otp"
+                class="form-control"
+                placeholder="Enter 6-digit OTP"
+                inputmode="numeric"
+                autocomplete="one-time-code"
+                maxlength="6"
+                minlength="6"
+                pattern="[0-9]{6}"
+                required
+                autofocus
+            >
+
+        </div>
+
+
+        <!-- Information -->
+
+        <div
+            style="
+                background: #fef3c7;
+                border: 1px solid #fde68a;
+                color: #92400e;
+                padding: 12px;
+                border-radius: 7px;
+                margin-bottom: 20px;
+                font-size: 13px;
+            "
+        >
+
+            ⏱️ The OTP is valid for
+            {{ config.get("OTP_EXPIRY_MINUTES", 10) }}
+            minutes.
+
+            <br><br>
+
+            🔒 Never share your OTP with anyone.
+
+        </div>
+
+
+        <!-- Verify -->
+
+        <button
+            type="submit"
+            class="btn btn-primary"
+            style="width: 100%;"
+        >
+            ✅ Verify OTP
+        </button>
+
+    </form>
+
+
+    <!-- Back -->
+
+    <div
+        style="
+            text-align: center;
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid #e5e7eb;
+        "
+    >
+
+        <a
+            href="{{ url_for('main.forgot_master_password') }}"
+            class="link"
+        >
+            ← Request New OTP
+        </a>
+
+    </div>
+
+</div>
+
+{% endblock %}
