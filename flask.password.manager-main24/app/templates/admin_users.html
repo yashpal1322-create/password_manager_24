@@ -1,0 +1,250 @@
+{% extends "base.html" %}
+
+{% block title %}Manage Users - Admin Vault{% endblock %}
+
+{% block content %}
+
+<!-- =========================
+     HEADER
+========================= -->
+
+<div
+    style="
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 15px;
+        flex-wrap: wrap;
+        margin-bottom: 25px;
+    "
+>
+
+    <div>
+
+        <h1 style="margin: 0 0 7px;">
+            👥 Manage Users
+        </h1>
+
+        <p
+            style="
+                margin: 0;
+                color: #6b7280;
+            "
+        >
+            View registered user accounts.
+        </p>
+
+    </div>
+
+
+    <a
+        href="{{ url_for('main.admin_vault') }}"
+        class="btn btn-secondary"
+    >
+        ← Admin Vault
+    </a>
+
+</div>
+
+
+<!-- =========================
+     USER LIST
+========================= -->
+
+<div class="card">
+
+    <div
+        style="
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 15px;
+            flex-wrap: wrap;
+            margin-bottom: 20px;
+        "
+    >
+
+        <div>
+
+            <h2 style="margin: 0 0 5px;">
+                Registered Users
+            </h2>
+
+            <p
+                style="
+                    margin: 0;
+                    color: #6b7280;
+                    font-size: 14px;
+                "
+            >
+                Total accounts:
+                <strong>{{ users|length }}</strong>
+            </p>
+
+        </div>
+
+    </div>
+
+
+    {% if users %}
+
+        <div class="table-container">
+
+            <table class="table">
+
+                <thead>
+
+                    <tr>
+
+                        <th>
+                            ID
+                        </th>
+
+                        <th>
+                            Username
+                        </th>
+
+                        <th>
+                            Email
+                        </th>
+
+                        <th>
+                            Role
+                        </th>
+
+                    </tr>
+
+                </thead>
+
+
+                <tbody>
+
+                    {% for user in users %}
+
+                        <tr>
+
+                            <!-- ID -->
+
+                            <td>
+                                {{ user.id }}
+                            </td>
+
+
+                            <!-- Username -->
+
+                            <td>
+
+                                <strong>
+                                    {{ user.username }}
+                                </strong>
+
+                                {% if user.id == session.get("user_id") %}
+
+                                    <span
+                                        class="badge badge-admin"
+                                        style="margin-left: 5px;"
+                                    >
+                                        You
+                                    </span>
+
+                                {% endif %}
+
+                            </td>
+
+
+                            <!-- Email -->
+
+                            <td>
+                                {{ user.email }}
+                            </td>
+
+
+                            <!-- Role -->
+
+                            <td>
+
+                                {% if user.role == "admin" %}
+
+                                    <span class="badge badge-admin">
+                                        👑 Admin
+                                    </span>
+
+                                {% else %}
+
+                                    <span class="badge badge-user">
+                                        👤 User
+                                    </span>
+
+                                {% endif %}
+
+                            </td>
+
+                        </tr>
+
+                    {% endfor %}
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+
+    {% else %}
+
+        <div class="empty-state">
+
+            <div class="empty-state-icon">
+                👥
+            </div>
+
+            <h3>
+                No users found
+            </h3>
+
+            <p
+                style="
+                    color: #6b7280;
+                "
+            >
+                There are currently no registered users.
+            </p>
+
+        </div>
+
+    {% endif %}
+
+</div>
+
+
+<!-- =========================
+     SECURITY NOTICE
+========================= -->
+
+<div
+    class="card"
+    style="
+        margin-top: 20px;
+        border-left: 4px solid #2563eb;
+    "
+>
+
+    <h3 style="margin-top: 0;">
+        🔒 Privacy & Security
+    </h3>
+
+    <p
+        style="
+            color: #6b7280;
+            line-height: 1.6;
+            margin-bottom: 0;
+        "
+    >
+        This page displays only basic account information.
+        User Master Passwords and saved vault passwords are
+        never displayed here.
+    </p>
+
+</div>
+
+{% endblock %}

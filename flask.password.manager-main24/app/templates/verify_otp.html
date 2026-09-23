@@ -1,0 +1,258 @@
+{% extends "base.html" %}
+
+{% block title %}Verify OTP{% endblock %}
+
+{% block content %}
+
+<!-- Floating Bubbles -->
+<div class="bubbles">
+    <span></span><span></span><span></span><span></span><span></span>
+</div>
+
+<div class="auth-container">
+
+    <div class="auth-card">
+
+        <!-- Header -->
+        <div class="auth-header">
+            <div class="auth-icon">📩</div>
+            <h1 class="auth-title">Verify OTP</h1>
+            <p class="auth-subtitle">
+                Enter the 6-digit code sent to your email
+            </p>
+        </div>
+
+        <div class="divider"></div>
+
+        <!-- Form -->
+        <form method="POST" action="{{ url_for('main.verify_otp') }}">
+
+            <!-- Hidden full OTP -->
+            <input type="hidden" name="otp" id="otp">
+
+            <!-- OTP Boxes -->
+            <div class="otp-boxes">
+                <input type="text" maxlength="1" class="otp-input">
+                <input type="text" maxlength="1" class="otp-input">
+                <input type="text" maxlength="1" class="otp-input">
+                <input type="text" maxlength="1" class="otp-input">
+                <input type="text" maxlength="1" class="otp-input">
+                <input type="text" maxlength="1" class="otp-input">
+            </div>
+
+            <!-- Info -->
+            <div class="info-box">
+                ⏱️ Valid for {{ config.get("OTP_EXPIRY_MINUTES", 10) }} minutes  
+                <br>
+                🔒 Never share your OTP
+            </div>
+
+            <!-- Button -->
+            <button type="submit" class="btn-primary">
+                ✅ Verify OTP
+            </button>
+
+        </form>
+
+        <!-- Footer -->
+        <div class="auth-footer">
+            <a href="{{ url_for('main.forgot_master_password') }}">
+                ← Request New OTP
+            </a>
+        </div>
+
+    </div>
+
+</div>
+
+<style>
+
+/* Layout */
+.auth-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 95vh;
+}
+
+/* Card */
+.auth-card {
+    width: 100%;
+    max-width: 420px;
+    padding: 32px;
+    border-radius: 20px;
+
+    background: rgba(255,255,255,0.06);
+    backdrop-filter: blur(25px);
+
+    color: white;
+    position: relative;
+
+    box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+}
+
+/* Gradient Border */
+.auth-card::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    padding: 2px;
+    border-radius: 20px;
+
+    background: linear-gradient(270deg, #3b82f6, #6366f1, #3b82f6);
+    background-size: 400% 400%;
+    animation: borderMove 8s infinite;
+
+    z-index: -1;
+}
+
+/* Header */
+.auth-header {
+    text-align: center;
+}
+
+.auth-icon {
+    font-size: 30px;
+}
+
+.auth-title {
+    font-size: 24px;
+    font-weight: 600;
+}
+
+.auth-subtitle {
+    font-size: 13px;
+    color: #94a3b8;
+}
+
+/* Divider */
+.divider {
+    height: 1px;
+    background: rgba(255,255,255,0.1);
+    margin: 15px 0 20px;
+}
+
+/* OTP */
+.otp-boxes {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+    margin-bottom: 15px;
+}
+
+.otp-input {
+    width: 45px;
+    height: 55px;
+    text-align: center;
+    font-size: 20px;
+
+    border-radius: 10px;
+    border: none;
+
+    background: rgba(255,255,255,0.08);
+    color: white;
+}
+
+.otp-input:focus {
+    outline: none;
+    border: 1px solid #3b82f6;
+    box-shadow: 0 0 10px rgba(59,130,246,0.5);
+}
+
+/* Info */
+.info-box {
+    margin: 10px 0 15px;
+    padding: 12px;
+    border-radius: 10px;
+
+    background: rgba(245,158,11,0.15);
+    color: #facc15;
+    font-size: 13px;
+}
+
+/* Button */
+.btn-primary {
+    width: 100%;
+    padding: 12px;
+    border-radius: 10px;
+    border: none;
+
+    background: linear-gradient(135deg, #3b82f6, #6366f1);
+    color: white;
+
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 30px rgba(59,130,246,0.4);
+}
+
+/* Footer */
+.auth-footer {
+    text-align: center;
+    margin-top: 20px;
+    border-top: 1px solid rgba(255,255,255,0.1);
+    padding-top: 15px;
+}
+
+.auth-footer a {
+    color: #cbd5f5;
+    text-decoration: none;
+}
+
+/* Bubbles */
+.bubbles span {
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    background: rgba(59,130,246,0.15);
+    border-radius: 50%;
+    bottom: -50px;
+    animation: rise 18s infinite;
+}
+
+@keyframes rise {
+    0% { transform: translateY(0); opacity: 0; }
+    100% { transform: translateY(-110vh); opacity: 0; }
+}
+
+@keyframes borderMove {
+    0% { background-position: 0% }
+    50% { background-position: 100% }
+    100% { background-position: 0% }
+}
+
+</style>
+
+<script>
+
+/* OTP Auto Input */
+const inputs = document.querySelectorAll(".otp-input");
+const hiddenInput = document.getElementById("otp");
+
+inputs.forEach((input, index) => {
+    input.addEventListener("input", () => {
+        if (input.value.length === 1 && index < inputs.length - 1) {
+            inputs[index + 1].focus();
+        }
+        updateOTP();
+    });
+
+    input.addEventListener("keydown", (e) => {
+        if (e.key === "Backspace" && !input.value && index > 0) {
+            inputs[index - 1].focus();
+        }
+    });
+});
+
+function updateOTP() {
+    let value = "";
+    inputs.forEach(i => value += i.value);
+    hiddenInput.value = value;
+}
+
+</script>
+
+{% endblock %}

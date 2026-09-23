@@ -1,0 +1,573 @@
+{% extends "base.html" %}
+
+{% block title %}Admin Vault - Password Manager{% endblock %}
+
+{% block content %}
+
+<!-- =========================
+     ADMIN HEADER
+========================= -->
+
+<div
+    style="
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 15px;
+        flex-wrap: wrap;
+        margin-bottom: 25px;
+    "
+>
+
+    <div>
+
+        <h1 style="margin: 0 0 7px;">
+            👑 Admin Vault
+        </h1>
+
+        <p
+            style="
+                margin: 0;
+                color: #6b7280;
+            "
+        >
+            Welcome, {{ session.get("username") }}
+        </p>
+
+    </div>
+
+    <span class="badge badge-admin">
+        👑 Administrator
+    </span>
+
+</div>
+
+
+<!-- =========================
+     ADMIN SECURITY NOTICE
+========================= -->
+
+<div
+    class="card"
+    style="
+        margin-bottom: 20px;
+        border-left: 4px solid #d97706;
+    "
+>
+
+    <h3 style="margin-top: 0;">
+        🛡️ Administrator Access
+    </h3>
+
+    <p
+        style="
+            color: #6b7280;
+            line-height: 1.6;
+            margin-bottom: 0;
+        "
+    >
+        This area is restricted to administrators.
+        You can review system activity and account
+        recovery events here.
+    </p>
+
+</div>
+
+
+<!-- =========================
+     STATISTICS
+========================= -->
+
+<div
+    style="
+        display: grid;
+        grid-template-columns:
+            repeat(
+                auto-fit,
+                minmax(200px, 1fr)
+            );
+        gap: 15px;
+        margin-bottom: 20px;
+    "
+>
+
+    <!-- Total Users -->
+
+    <div class="card">
+
+        <div
+            style="
+                font-size: 32px;
+                margin-bottom: 8px;
+            "
+        >
+            👥
+        </div>
+
+        <div
+            style="
+                font-size: 14px;
+                color: #6b7280;
+            "
+        >
+            Total Users
+        </div>
+
+        <div
+            style="
+                font-size: 28px;
+                font-weight: bold;
+                margin-top: 5px;
+            "
+        >
+            {{ users|length }}
+        </div>
+
+    </div>
+
+
+    <!-- Total Logs -->
+
+    <div class="card">
+
+        <div
+            style="
+                font-size: 32px;
+                margin-bottom: 8px;
+            "
+        >
+            📋
+        </div>
+
+        <div
+            style="
+                font-size: 14px;
+                color: #6b7280;
+            "
+        >
+            Audit Log Entries
+        </div>
+
+        <div
+            style="
+                font-size: 28px;
+                font-weight: bold;
+                margin-top: 5px;
+            "
+        >
+            {{ logs|length }}
+        </div>
+
+    </div>
+
+
+    <!-- Admin Status -->
+
+    <div class="card">
+
+        <div
+            style="
+                font-size: 32px;
+                margin-bottom: 8px;
+            "
+        >
+            🔓
+        </div>
+
+        <div
+            style="
+                font-size: 14px;
+                color: #6b7280;
+            "
+        >
+            Vault Status
+        </div>
+
+        <div
+            style="
+                font-size: 20px;
+                font-weight: bold;
+                margin-top: 8px;
+            "
+        >
+            Active
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- =========================
+     USER SUMMARY
+========================= -->
+
+<div class="card" style="margin-bottom: 20px;">
+
+    <div
+        style="
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 15px;
+            flex-wrap: wrap;
+            margin-bottom: 15px;
+        "
+    >
+
+        <div>
+
+            <h2 style="margin: 0 0 5px;">
+                👥 Users
+            </h2>
+
+            <p
+                style="
+                    margin: 0;
+                    color: #6b7280;
+                    font-size: 14px;
+                "
+            >
+                Registered accounts in the system.
+            </p>
+
+        </div>
+
+        <a
+            href="{{ url_for('main.admin_users') }}"
+            class="btn btn-primary"
+        >
+            👥 Manage Users
+        </a>
+
+    </div>
+
+
+    {% if users %}
+
+        <div class="table-container">
+
+            <table class="table">
+
+                <thead>
+
+                    <tr>
+
+                        <th>
+                            ID
+                        </th>
+
+                        <th>
+                            Username
+                        </th>
+
+                        <th>
+                            Email
+                        </th>
+
+                        <th>
+                            Role
+                        </th>
+
+                    </tr>
+
+                </thead>
+
+                <tbody>
+
+                    {% for user in users %}
+
+                        <tr>
+
+                            <td>
+                                {{ user.id }}
+                            </td>
+
+                            <td>
+                                <strong>
+                                    {{ user.username }}
+                                </strong>
+                            </td>
+
+                            <td>
+                                {{ user.email }}
+                            </td>
+
+                            <td>
+
+                                {% if user.role == "admin" %}
+
+                                    <span class="badge badge-admin">
+                                        👑 Admin
+                                    </span>
+
+                                {% else %}
+
+                                    <span class="badge badge-user">
+                                        User
+                                    </span>
+
+                                {% endif %}
+
+                            </td>
+
+                        </tr>
+
+                    {% endfor %}
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    {% else %}
+
+        <div class="empty-state">
+
+            <div class="empty-state-icon">
+                👥
+            </div>
+
+            <p>
+                No users found.
+            </p>
+
+        </div>
+
+    {% endif %}
+
+</div>
+
+
+<!-- =========================
+     AUDIT LOGS
+========================= -->
+
+<div class="card">
+
+    <div
+        style="
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 15px;
+            flex-wrap: wrap;
+            margin-bottom: 15px;
+        "
+    >
+
+        <div>
+
+            <h2 style="margin: 0 0 5px;">
+                📋 Audit Logs
+            </h2>
+
+            <p
+                style="
+                    margin: 0;
+                    color: #6b7280;
+                    font-size: 14px;
+                "
+            >
+                Recent account and security activity.
+            </p>
+
+        </div>
+
+    </div>
+
+
+    {% if logs %}
+
+        <div class="table-container">
+
+            <table class="table">
+
+                <thead>
+
+                    <tr>
+
+                        <th>
+                            Time
+                        </th>
+
+                        <th>
+                            Username
+                        </th>
+
+                        <th>
+                            Action
+                        </th>
+
+                        <th>
+                            Details
+                        </th>
+
+                        <th>
+                            IP Address
+                        </th>
+
+                    </tr>
+
+                </thead>
+
+
+                <tbody>
+
+                    {% for log in logs %}
+
+                        <tr>
+
+                            <!-- Timestamp -->
+
+                            <td>
+
+                                {% if log.timestamp %}
+
+                                    {{ log.timestamp.strftime(
+                                        "%d-%m-%Y %H:%M:%S"
+                                    ) }}
+
+                                {% else %}
+
+                                    —
+
+                                {% endif %}
+
+                            </td>
+
+
+                            <!-- Username -->
+
+                            <td>
+
+                                <strong>
+                                    {{ log.username }}
+                                </strong>
+
+                            </td>
+
+
+                            <!-- Action -->
+
+                            <td>
+
+                                {% if "FAILED" in log.action %}
+
+                                    <span
+                                        class="badge"
+                                        style="
+                                            background: #fee2e2;
+                                            color: #991b1b;
+                                        "
+                                    >
+                                        {{ log.action }}
+                                    </span>
+
+                                {% elif
+                                    "SUCCESS" in log.action
+                                    or "VERIFIED" in log.action
+                                %}
+
+                                    <span
+                                        class="badge badge-success"
+                                    >
+                                        {{ log.action }}
+                                    </span>
+
+                                {% else %}
+
+                                    <span class="badge badge-user">
+                                        {{ log.action }}
+                                    </span>
+
+                                {% endif %}
+
+                            </td>
+
+
+                            <!-- Details -->
+
+                            <td>
+
+                                {{ log.details or "—" }}
+
+                            </td>
+
+
+                            <!-- IP -->
+
+                            <td>
+
+                                {{ log.ip_address or "—" }}
+
+                            </td>
+
+                        </tr>
+
+                    {% endfor %}
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    {% else %}
+
+        <div class="empty-state">
+
+            <div class="empty-state-icon">
+                📋
+            </div>
+
+            <h3>
+                No Audit Logs
+            </h3>
+
+            <p
+                style="
+                    color: #6b7280;
+                "
+            >
+                System activity will appear here.
+            </p>
+
+        </div>
+
+    {% endif %}
+
+</div>
+
+
+<!-- =========================
+     SECURITY NOTE
+========================= -->
+
+<div
+    class="card"
+    style="
+        margin-top: 20px;
+    "
+>
+
+    <h3 style="margin-top: 0;">
+        🔒 Security
+    </h3>
+
+    <p
+        style="
+            color: #6b7280;
+            line-height: 1.6;
+            margin-bottom: 0;
+        "
+    >
+        Admin access is limited to administrative
+        functions. User passwords are not displayed
+        in decrypted form in the Admin Vault.
+    </p>
+
+</div>
+
+{% endblock %}

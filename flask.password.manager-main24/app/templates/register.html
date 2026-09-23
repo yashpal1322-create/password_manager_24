@@ -1,0 +1,207 @@
+{% extends "base.html" %}
+
+{% block title %}Register - Password Manager{% endblock %}
+
+{% block content %}
+
+<div class="auth-wrapper">
+
+```
+<!-- LEFT SIDE (Branding / Visual) -->
+<div class="auth-left">
+    <h2>Secure Your Digital Life</h2>
+    <p>
+        Store, manage, and protect all your passwords with strong encryption.
+    </p>
+
+    
+</div>
+
+
+<!-- RIGHT SIDE (FORM) -->
+<div class="auth-card">
+
+    <div class="auth-header">
+        <div class="auth-icon">📝</div>
+        <h1>Create Account</h1>
+    </div>
+
+    <form method="POST" action="{{ url_for('main.register') }}">
+
+        <div class="form-group">
+            <input type="text" name="username" placeholder="Username" required>
+        </div>
+
+        <div class="form-group">
+            <input type="email" name="email" placeholder="Email address" required>
+        </div>
+
+        <div class="form-group">
+            <input type="password" id="password" name="master_password"
+                placeholder="Create password" onkeyup="checkStrength()" required>
+        </div>
+
+        <!-- Strength -->
+        <div class="strength">
+            <div id="bar"></div>
+        </div>
+        <small id="strengthText">Password strength</small>
+
+        <div class="form-group">
+            <input type="password" id="confirm" name="confirm_master_password"
+                placeholder="Confirm password" onkeyup="checkMatch()" required>
+        </div>
+
+        <!-- Match indicator -->
+        <small id="matchText"></small>
+
+        <button class="btn-primary">Create Account</button>
+
+    </form>
+
+    <div class="auth-footer">
+        <span>Already have an account?</span>
+        <a href="{{ url_for('main.login') }}">Login</a>
+    </div>
+
+</div>
+```
+
+</div>
+
+<style>
+
+/* Layout */
+.auth-wrapper {
+    display: flex;
+    min-height: 100vh;
+    background: linear-gradient(135deg, #0f172a, #1e293b);
+    color: white;
+}
+
+/* LEFT */
+.auth-left {
+    flex: 1;
+    padding: 60px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.auth-left h2 {
+    font-size: 32px;
+    margin-bottom: 15px;
+}
+
+.auth-left p {
+    color: #94a3b8;
+    margin-bottom: 20px;
+}
+
+.auth-left ul li {
+    margin-bottom: 10px;
+}
+
+/* RIGHT CARD */
+.auth-card {
+    width: 400px;
+    margin: auto;
+    padding: 35px;
+    border-radius: 16px;
+
+    background: rgba(255,255,255,0.05);
+    backdrop-filter: blur(20px);
+}
+
+/* Inputs */
+.form-group input {
+    width: 100%;
+    padding: 12px;
+    margin-bottom: 15px;
+
+    border-radius: 10px;
+    border: none;
+
+    background: rgba(255,255,255,0.08);
+    color: white;
+}
+
+/* Strength bar */
+.strength {
+    height: 6px;
+    background: rgba(255,255,255,0.1);
+    border-radius: 10px;
+}
+
+#bar {
+    height: 100%;
+    width: 0%;
+    border-radius: 10px;
+    transition: 0.3s;
+}
+
+/* Button */
+.btn-primary {
+    width: 100%;
+    padding: 12px;
+    margin-top: 15px;
+    border-radius: 10px;
+    border: none;
+    background: linear-gradient(135deg, #3b82f6, #6366f1);
+    color: white;
+    cursor: pointer;
+}
+
+/* Footer */
+.auth-footer {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.auth-footer a {
+    color: #3b82f6;
+}
+
+</style>
+
+<script>
+
+/* Strength */
+function checkStrength() {
+    const p = document.getElementById("password").value;
+    const bar = document.getElementById("bar");
+    const text = document.getElementById("strengthText");
+
+    let s = 0;
+    if (p.length > 7) s++;
+    if (/[A-Z]/.test(p)) s++;
+    if (/[0-9]/.test(p)) s++;
+    if (/[^A-Za-z0-9]/.test(p)) s++;
+
+    const width = ["0%","25%","50%","75%","100%"][s];
+    bar.style.width = width;
+
+    const labels = ["","Weak","Medium","Strong","Very Strong"];
+    text.innerText = labels[s];
+}
+
+/* Match */
+function checkMatch() {
+    const p = document.getElementById("password").value;
+    const c = document.getElementById("confirm").value;
+    const t = document.getElementById("matchText");
+
+    if (!c) {
+        t.innerText = "";
+    } else if (p === c) {
+        t.innerText = "Passwords match ✔";
+        t.style.color = "lightgreen";
+    } else {
+        t.innerText = "Passwords do not match ✖";
+        t.style.color = "red";
+    }
+}
+
+</script>
+
+{% endblock %}

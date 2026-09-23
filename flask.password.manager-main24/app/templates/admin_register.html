@@ -1,0 +1,264 @@
+{% extends "base.html" %}
+
+{% block title %}Admin Setup - Password Manager{% endblock %}
+
+{% block content %}
+
+<div class="auth-wrapper">
+
+    <!-- LEFT SIDE -->
+    <div class="auth-left">
+        <h2>Admin Setup Panel</h2>
+        <p>
+            Create your secure admin credentials to manage the vault system.
+        </p>
+
+        <ul>
+            <li>🔐 Full access to vault</li>
+            <li>📊 View audit logs</li>
+            <li>🛡️ Manage users securely</li>
+        </ul>
+    </div>
+
+    <!-- RIGHT SIDE -->
+    <div class="auth-card">
+
+        <div class="auth-header">
+            <div class="auth-icon">🛡️</div>
+            <h1>Create Admin</h1>
+        </div>
+
+        <form method="POST" action="{{ url_for('main.admin_register') }}">
+
+            <!-- USERNAME -->
+            <div class="form-group">
+                <input 
+                    type="text" 
+                    name="username" 
+                    placeholder="Admin Username" 
+                    required 
+                    autofocus
+                >
+            </div>
+
+            <!-- PASSWORD -->
+            <div class="form-group">
+                <input 
+                    type="password" 
+                    id="password" 
+                    name="password"
+                    placeholder="Create Admin Password" 
+                    onkeyup="checkStrength()" 
+                    required
+                >
+            </div>
+
+            <!-- STRENGTH -->
+            <div class="strength">
+                <div id="bar"></div>
+            </div>
+            <small id="strengthText">Password strength</small>
+
+            <!-- CONFIRM -->
+            <div class="form-group">
+                <input 
+                    type="password" 
+                    id="confirm" 
+                    name="confirm_password"
+                    placeholder="Confirm Password" 
+                    onkeyup="checkMatch()" 
+                    required
+                >
+            </div>
+
+            <!-- MATCH -->
+            <small id="matchText"></small>
+
+            <!-- BUTTON -->
+            <button class="btn-primary">
+                Create Admin Account
+            </button>
+
+        </form>
+
+        <div class="auth-footer">
+            <a href="{{ url_for('main.login') }}">← Back to Login</a>
+        </div>
+
+    </div>
+
+</div>
+
+<!-- ================= STYLE ================= -->
+
+<style>
+
+/* LAYOUT */
+.auth-wrapper {
+    display: flex;
+    min-height: 100vh;
+    background: radial-gradient(circle at top, #0f172a, #020617);
+    color: white;
+}
+
+/* LEFT */
+.auth-left {
+    flex: 1;
+    padding: 60px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.auth-left h2 {
+    font-size: 32px;
+    margin-bottom: 15px;
+}
+
+.auth-left p {
+    color: #94a3b8;
+    margin-bottom: 20px;
+}
+
+.auth-left ul li {
+    margin-bottom: 10px;
+    color: #cbd5f5;
+}
+
+/* RIGHT CARD */
+.auth-card {
+    width: 400px;
+    margin: auto;
+    padding: 35px;
+    border-radius: 18px;
+
+    background: rgba(255,255,255,0.05);
+    backdrop-filter: blur(25px);
+
+    box-shadow: 0 20px 60px rgba(0,0,0,0.6);
+}
+
+/* HEADER */
+.auth-header {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.auth-icon {
+    font-size: 28px;
+}
+
+.auth-header h1 {
+    font-size: 22px;
+}
+
+/* INPUT */
+.form-group input {
+    width: 100%;
+    padding: 12px;
+    margin-bottom: 15px;
+
+    border-radius: 10px;
+    border: none;
+
+    background: rgba(255,255,255,0.08);
+    color: white;
+}
+
+.form-group input:focus {
+    outline: none;
+    box-shadow: 0 0 10px rgba(59,130,246,0.6);
+}
+
+/* STRENGTH */
+.strength {
+    height: 6px;
+    background: rgba(255,255,255,0.1);
+    border-radius: 10px;
+}
+
+#bar {
+    height: 100%;
+    width: 0%;
+    border-radius: 10px;
+    transition: 0.3s;
+}
+
+/* BUTTON */
+.btn-primary {
+    width: 100%;
+    padding: 12px;
+    margin-top: 15px;
+    border-radius: 10px;
+    border: none;
+
+    background: linear-gradient(135deg, #3b82f6, #6366f1);
+    color: white;
+
+    cursor: pointer;
+}
+
+.btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 25px rgba(59,130,246,0.5);
+}
+
+/* FOOTER */
+.auth-footer {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.auth-footer a {
+    color: #60a5fa;
+    text-decoration: none;
+}
+
+</style>
+
+<!-- ================= JS ================= -->
+
+<script>
+
+/* STRENGTH CHECK */
+function checkStrength() {
+    const p = document.getElementById("password").value;
+    const bar = document.getElementById("bar");
+    const text = document.getElementById("strengthText");
+
+    let s = 0;
+    if (p.length > 7) s++;
+    if (/[A-Z]/.test(p)) s++;
+    if (/[0-9]/.test(p)) s++;
+    if (/[^A-Za-z0-9]/.test(p)) s++;
+
+    const width = ["0%","25%","50%","75%","100%"][s];
+    const colors = ["","red","orange","yellow","lime"];
+
+    bar.style.width = width;
+    bar.style.background = colors[s];
+
+    const labels = ["","Weak","Medium","Strong","Very Strong"];
+    text.innerText = labels[s];
+}
+
+/* PASSWORD MATCH */
+function checkMatch() {
+    const p = document.getElementById("password").value;
+    const c = document.getElementById("confirm").value;
+    const t = document.getElementById("matchText");
+
+    if (!c) {
+        t.innerText = "";
+    } else if (p === c) {
+        t.innerText = "Passwords match ✔";
+        t.style.color = "lightgreen";
+    } else {
+        t.innerText = "Passwords do not match ✖";
+        t.style.color = "red";
+    }
+}
+
+</script>
+
+{% endblock %}

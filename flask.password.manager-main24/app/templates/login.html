@@ -1,0 +1,250 @@
+{% extends "base.html" %}
+
+{% block title %}Login - Password Manager{% endblock %}
+
+{% block content %}
+
+<div class="auth-container">
+
+```
+<!-- Floating Bubbles -->
+<div class="bubbles">
+    <span></span><span></span><span></span><span></span><span></span>
+    <span></span><span></span><span></span><span></span><span></span>
+</div>
+
+<div class="auth-card">
+
+    <div class="auth-header">
+        <div class="auth-icon">🔐</div>
+        <h1 class="auth-title">Welcome Back</h1>
+        <p class="auth-subtitle">Secure access to your vault</p>
+    </div>
+
+    <form method="POST" action="{{ url_for('main.login') }}">
+
+        <div class="form-group">
+            <label>Username</label>
+            <input type="text" name="username" class="form-control" placeholder="Enter username" required>
+        </div>
+
+        <div class="form-group">
+            <label>Master Password</label>
+            <div class="password-wrapper">
+                <input type="password" id="master_password" name="master_password" class="form-control" required>
+                <button type="button" class="toggle-password"
+                    onclick="togglePassword('master_password', this)">👁️</button>
+            </div>
+        </div>
+
+        <button type="submit" class="btn-primary">
+            Login Securely
+        </button>
+
+    </form>
+
+    <div class="auth-links">
+        <a href="{{ url_for('main.forgot_master_password') }}">Forgot Password?</a>
+    </div>
+
+    <div class="auth-footer">
+        <span>Don't have an account?</span>
+        <a href="{{ url_for('main.register') }}">Create Account</a>
+    </div>
+
+</div>
+```
+
+</div>
+
+<style>
+
+/* Background */
+.auth-container {
+    position: relative;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: linear-gradient(135deg, #0f172a, #1e293b);
+    overflow: hidden;
+}
+
+/* Floating bubbles */
+.bubbles span {
+    position: absolute;
+    bottom: -50px;
+    width: 20px;
+    height: 20px;
+    background: rgba(59,130,246,0.15);
+    border-radius: 50%;
+    animation: rise 15s infinite ease-in;
+}
+
+.bubbles span:nth-child(odd) {
+    background: rgba(99,102,241,0.15);
+}
+
+.bubbles span:nth-child(1) { left: 10%; animation-duration: 12s; }
+.bubbles span:nth-child(2) { left: 20%; animation-duration: 18s; width:25px;height:25px;}
+.bubbles span:nth-child(3) { left: 35%; animation-duration: 14s; }
+.bubbles span:nth-child(4) { left: 50%; animation-duration: 20s; }
+.bubbles span:nth-child(5) { left: 65%; animation-duration: 16s; }
+.bubbles span:nth-child(6) { left: 75%; animation-duration: 22s; }
+.bubbles span:nth-child(7) { left: 85%; animation-duration: 17s; }
+.bubbles span:nth-child(8) { left: 30%; animation-duration: 19s; }
+.bubbles span:nth-child(9) { left: 55%; animation-duration: 13s; }
+.bubbles span:nth-child(10){ left: 90%; animation-duration: 21s; }
+
+@keyframes rise {
+    0% { transform: translateY(0) scale(1); opacity: 0; }
+    30% { opacity: 1; }
+    100% { transform: translateY(-110vh) scale(1.5); opacity: 0; }
+}
+
+/* Card */
+.auth-card {
+    position: relative;
+    z-index: 2;
+    width: 100%;
+    max-width: 420px;
+    padding: 35px;
+    border-radius: 18px;
+    background: rgba(255,255,255,0.06);
+    backdrop-filter: blur(20px);
+    box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+    color: #fff;
+    transition: transform 0.4s ease, box-shadow 0.4s ease;
+}
+
+.auth-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 30px 80px rgba(0,0,0,0.6);
+}
+
+/* Header */
+.auth-header {
+    text-align: center;
+    margin-bottom: 25px;
+}
+
+.auth-icon {
+    font-size: 34px;
+    margin-bottom: 10px;
+}
+
+.auth-title {
+    font-size: 26px;
+    font-weight: 600;
+}
+
+.auth-subtitle {
+    font-size: 14px;
+    color: #94a3b8;
+}
+
+/* Inputs */
+.form-group {
+    margin-bottom: 18px;
+}
+
+label {
+    font-size: 13px;
+    color: #cbd5f5;
+}
+
+.form-control {
+    width: 100%;
+    padding: 12px;
+    border-radius: 10px;
+    border: none;
+    margin-top: 5px;
+    background: rgba(255,255,255,0.08);
+    color: white;
+    transition: all 0.3s ease;
+}
+
+.form-control:hover {
+    background: rgba(255,255,255,0.12);
+}
+
+.form-control:focus {
+    outline: none;
+    border: 1px solid #3b82f6;
+    background: rgba(255,255,255,0.15);
+    box-shadow: 0 0 10px rgba(59,130,246,0.4);
+}
+
+/* Password */
+.password-wrapper {
+    position: relative;
+}
+
+.toggle-password {
+    position: absolute;
+    right: 10px;
+    top: 10px;
+    background: none;
+    border: none;
+    color: #94a3b8;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.toggle-password:hover {
+    color: #3b82f6;
+}
+
+/* Button */
+.btn-primary {
+    width: 100%;
+    padding: 12px;
+    border-radius: 10px;
+    border: none;
+    background: linear-gradient(135deg, #3b82f6, #6366f1);
+    color: white;
+    font-weight: 600;
+    margin-top: 10px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.btn-primary:hover {
+    transform: translateY(-2px) scale(1.02);
+    box-shadow: 0 10px 25px rgba(59,130,246,0.4);
+}
+
+/* Links */
+.auth-links, .auth-footer {
+    text-align: center;
+    margin-top: 18px;
+    font-size: 13px;
+}
+
+.auth-links a,
+.auth-footer a {
+    color: #3b82f6;
+    text-decoration: none;
+    position: relative;
+}
+
+.auth-links a::after,
+.auth-footer a::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: -2px;
+    width: 0%;
+    height: 2px;
+    background: #3b82f6;
+    transition: 0.3s;
+}
+
+.auth-links a:hover::after,
+.auth-footer a:hover::after {
+    width: 100%;
+}
+
+</style>
+
+{% endblock %}
